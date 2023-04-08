@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case Converter</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+<div class="converter body">
+<div class="title"><h1>Case Converter</h1></div>
+    <textarea id="text" cols="100" rows="20"></textarea>
+<div class="buttons">
+    <button type="submit" class="button" id="upper-case">Upper Case</button>
+    <button type="submit" class="button" id="lower-case">Lower Case</button>
+    <button type="submit" class="button" id="proper-case">Proper Case</button>
+    <button type="submit" class="button" id="sentence-case">Sentence Case</button>
+    <button type="submit" class="button" id="save-text-file">Save Text File</button>
+</div>
+</div>
+<script>
+    const upperButton = document.getElementById("upper-case")
+    const lowerButton = document.getElementById("lower-case")
+    const properButton = document.getElementById("proper-case")
+    const sentenceButton = document.getElementById("sentence-case")
+    const saveButton = document.getElementById("save-text-file")
+    let text = document.getElementById("text")
+
+    upperButton.addEventListener("click", () => {
+        changeCase("upper")
+    })
+    lowerButton.addEventListener("click", () => {
+        changeCase("lower")
+    })
+    properButton.addEventListener("click", () => {
+        changeCase("proper")
+    })
+    sentenceButton.addEventListener("click", () => {
+        changeCase("sentence")
+    })
+    saveButton.addEventListener("click", () => {
+        var a = document.createElement("a");
+        a.href = window.URL.createObjectURL(new Blob([text.value], {type: "text/plain"}));
+        a.download = "text.txt";
+        a.click();
+    })
+
+    function changeCase(caseType) {
+        textContent = text.value
+        switch(caseType) {
+            case "lower":
+                textContent = textContent.toLowerCase();
+            break;
+            case "upper":
+                textContent = textContent.toUpperCase();
+            break;
+            case "proper":
+                words = textContent.split(" ");
+                textSplit = words.map(word => {
+                    return word[0].toUpperCase() + word.slice(1).toLowerCase();
+                });
+                textContent = textSplit.join(" ");
+                break;
+            case "sentence":
+                words = textContent.split(/(?<=[.?!])\s+/);
+                textSplit = words.map(word => {
+                    return word[0].toUpperCase() + word.slice(1).toLowerCase();
+                });
+                textContent = textSplit.join(" ");
+                break;
+
+        }
+        text.value = textContent
+    }
+
+    document.querySelectorAll("button").addEventListener("click", (event) => {
+        event.preventDefault();
+    })
+</script>
+</body>
+</html>
